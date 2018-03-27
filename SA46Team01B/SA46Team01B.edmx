@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SA46Team01BModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingNo" />
+          </Key>
+          <Property Name="BookingNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MemberID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TransactionDate" Type="date" Nullable="false" />
+          <Property Name="BookingAmount" Type="decimal" Precision="8" Scale="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookingDetail">
+          <Key>
+            <PropertyRef Name="BookingNo" />
+            <PropertyRef Name="SportFacilityID" />
+            <PropertyRef Name="BookingDate" />
+            <PropertyRef Name="SessionNo" />
+          </Key>
+          <Property Name="BookingNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SportFacilityID" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="BookingDate" Type="date" Nullable="false" />
+          <Property Name="SessionNo" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="6" Scale="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryCode" />
+          </Key>
+          <Property Name="CountryCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="AmountSpend" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Address" Type="nvarchar" MaxLength="155" Nullable="false" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="CountryCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ContactTitle" Type="nvarchar" MaxLength="2" />
+          <Property Name="PhoneNo" Type="nvarchar" MaxLength="14" />
+          <Property Name="Email" Type="nvarchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="MemberCategory">
+          <Key>
+            <PropertyRef Name="Category" />
+          </Key>
+          <Property Name="Category" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Discount" Type="decimal" Precision="3" Scale="1" Nullable="false" />
+          <Property Name="TargetAmount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionNo" />
+          </Key>
+          <Property Name="SessionNo" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SportFacility">
+          <Key>
+            <PropertyRef Name="SportFacilityNo" />
+          </Key>
+          <Property Name="SportFacilityNo" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="SportFacilityName" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PricePerHour" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SportFacilityDetails">
+          <Key>
+            <PropertyRef Name="SportFacilityID" />
+          </Key>
+          <Property Name="SportFacilityID" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="SportFacilityNo" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Location" Type="nvarchar" MaxLength="5" />
+          <Property Name="Quota" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Booking__MemberI__4AB81AF0">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingDe__Booki__4D94879B">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="1" />
+          <End Role="BookingDetail" Type="Self.BookingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="BookingNo" />
+            </Principal>
+            <Dependent Role="BookingDetail">
+              <PropertyRef Name="BookingNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingDe__Sessi__4F7CD00D">
+          <End Role="Session" Type="Self.Session" Multiplicity="1" />
+          <End Role="BookingDetail" Type="Self.BookingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="SessionNo" />
+            </Principal>
+            <Dependent Role="BookingDetail">
+              <PropertyRef Name="SessionNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingDe__Sport__4E88ABD4">
+          <End Role="SportFacilityDetails" Type="Self.SportFacilityDetails" Multiplicity="1" />
+          <End Role="BookingDetail" Type="Self.BookingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SportFacilityDetails">
+              <PropertyRef Name="SportFacilityID" />
+            </Principal>
+            <Dependent Role="BookingDetail">
+              <PropertyRef Name="SportFacilityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Member__Category__403A8C7D">
+          <End Role="MemberCategory" Type="Self.MemberCategory" Multiplicity="1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberCategory">
+              <PropertyRef Name="Category" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Member__CountryC__3F466844">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryCode" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="CountryCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SportFaci__Sport__44FF419A">
+          <End Role="SportFacility" Type="Self.SportFacility" Multiplicity="1" />
+          <End Role="SportFacilityDetails" Type="Self.SportFacilityDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SportFacility">
+              <PropertyRef Name="SportFacilityNo" />
+            </Principal>
+            <Dependent Role="SportFacilityDetails">
+              <PropertyRef Name="SportFacilityNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SA46Team01BModelStoreContainer">
+          <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookingDetail" EntityType="Self.BookingDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MemberCategory" EntityType="Self.MemberCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SportFacility" EntityType="Self.SportFacility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SportFacilityDetails" EntityType="Self.SportFacilityDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Booking__MemberI__4AB81AF0" Association="Self.FK__Booking__MemberI__4AB81AF0">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingDe__Booki__4D94879B" Association="Self.FK__BookingDe__Booki__4D94879B">
+            <End Role="Booking" EntitySet="Booking" />
+            <End Role="BookingDetail" EntitySet="BookingDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingDe__Sessi__4F7CD00D" Association="Self.FK__BookingDe__Sessi__4F7CD00D">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="BookingDetail" EntitySet="BookingDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingDe__Sport__4E88ABD4" Association="Self.FK__BookingDe__Sport__4E88ABD4">
+            <End Role="SportFacilityDetails" EntitySet="SportFacilityDetails" />
+            <End Role="BookingDetail" EntitySet="BookingDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Member__Category__403A8C7D" Association="Self.FK__Member__Category__403A8C7D">
+            <End Role="MemberCategory" EntitySet="MemberCategory" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Member__CountryC__3F466844" Association="Self.FK__Member__CountryC__3F466844">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Member" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SportFaci__Sport__44FF419A" Association="Self.FK__SportFaci__Sport__44FF419A">
+            <End Role="SportFacility" EntitySet="SportFacility" />
+            <End Role="SportFacilityDetails" EntitySet="SportFacilityDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SA46Team01BModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingNo" />
+          </Key>
+          <Property Name="BookingNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MemberID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BookingAmount" Type="Decimal" Precision="8" Scale="1" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="Self.FK__Booking__MemberI__4AB81AF0" FromRole="Booking" ToRole="Member" />
+          <NavigationProperty Name="BookingDetails" Relationship="Self.FK__BookingDe__Booki__4D94879B" FromRole="Booking" ToRole="BookingDetail" />
+        </EntityType>
+        <EntityType Name="BookingDetail">
+          <Key>
+            <PropertyRef Name="BookingNo" />
+            <PropertyRef Name="SportFacilityID" />
+            <PropertyRef Name="BookingDate" />
+            <PropertyRef Name="SessionNo" />
+          </Key>
+          <Property Name="BookingNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SportFacilityID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BookingDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SessionNo" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="6" Scale="1" Nullable="false" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__BookingDe__Booki__4D94879B" FromRole="BookingDetail" ToRole="Booking" />
+          <NavigationProperty Name="Session" Relationship="Self.FK__BookingDe__Sessi__4F7CD00D" FromRole="BookingDetail" ToRole="Session" />
+          <NavigationProperty Name="SportFacilityDetail" Relationship="Self.FK__BookingDe__Sport__4E88ABD4" FromRole="BookingDetail" ToRole="SportFacilityDetails" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryCode" />
+          </Key>
+          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CountryName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Members" Relationship="Self.FK__Member__CountryC__3F466844" FromRole="Country" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MemberName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="AmountSpend" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Address" Type="String" MaxLength="155" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContactTitle" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNo" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK__Booking__MemberI__4AB81AF0" FromRole="Member" ToRole="Booking" />
+          <NavigationProperty Name="Country" Relationship="Self.FK__Member__CountryC__3F466844" FromRole="Member" ToRole="Country" />
+          <NavigationProperty Name="MemberCategory" Relationship="Self.FK__Member__Category__403A8C7D" FromRole="Member" ToRole="MemberCategory" />
+        </EntityType>
+        <EntityType Name="MemberCategory">
+          <Key>
+            <PropertyRef Name="Category" />
+          </Key>
+          <Property Name="Category" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Discount" Type="Decimal" Precision="3" Scale="1" Nullable="false" />
+          <Property Name="TargetAmount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Members" Relationship="Self.FK__Member__Category__403A8C7D" FromRole="MemberCategory" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionNo" />
+          </Key>
+          <Property Name="SessionNo" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="BookingDetails" Relationship="Self.FK__BookingDe__Sessi__4F7CD00D" FromRole="Session" ToRole="BookingDetail" />
+        </EntityType>
+        <EntityType Name="SportFacility">
+          <Key>
+            <PropertyRef Name="SportFacilityNo" />
+          </Key>
+          <Property Name="SportFacilityNo" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SportFacilityName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PricePerHour" Type="Decimal" Precision="4" Scale="1" Nullable="false" />
+          <NavigationProperty Name="SportFacilityDetails" Relationship="Self.FK__SportFaci__Sport__44FF419A" FromRole="SportFacility" ToRole="SportFacilityDetails" />
+        </EntityType>
+        <EntityType Name="SportFacilityDetail">
+          <Key>
+            <PropertyRef Name="SportFacilityID" />
+          </Key>
+          <Property Name="SportFacilityID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SportFacilityNo" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Quota" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BookingDetails" Relationship="Self.FK__BookingDe__Sport__4E88ABD4" FromRole="SportFacilityDetails" ToRole="BookingDetail" />
+          <NavigationProperty Name="SportFacility" Relationship="Self.FK__SportFaci__Sport__44FF419A" FromRole="SportFacilityDetails" ToRole="SportFacility" />
+        </EntityType>
+        <Association Name="FK__Booking__MemberI__4AB81AF0">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingDe__Booki__4D94879B">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="1" />
+          <End Role="BookingDetail" Type="Self.BookingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="BookingNo" />
+            </Principal>
+            <Dependent Role="BookingDetail">
+              <PropertyRef Name="BookingNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingDe__Sessi__4F7CD00D">
+          <End Role="Session" Type="Self.Session" Multiplicity="1" />
+          <End Role="BookingDetail" Type="Self.BookingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="SessionNo" />
+            </Principal>
+            <Dependent Role="BookingDetail">
+              <PropertyRef Name="SessionNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingDe__Sport__4E88ABD4">
+          <End Role="SportFacilityDetails" Type="Self.SportFacilityDetail" Multiplicity="1" />
+          <End Role="BookingDetail" Type="Self.BookingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SportFacilityDetails">
+              <PropertyRef Name="SportFacilityID" />
+            </Principal>
+            <Dependent Role="BookingDetail">
+              <PropertyRef Name="SportFacilityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Member__CountryC__3F466844">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryCode" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="CountryCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Member__Category__403A8C7D">
+          <End Role="MemberCategory" Type="Self.MemberCategory" Multiplicity="1" />
+          <End Role="Member" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberCategory">
+              <PropertyRef Name="Category" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SportFaci__Sport__44FF419A">
+          <End Role="SportFacility" Type="Self.SportFacility" Multiplicity="1" />
+          <End Role="SportFacilityDetails" Type="Self.SportFacilityDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SportFacility">
+              <PropertyRef Name="SportFacilityNo" />
+            </Principal>
+            <Dependent Role="SportFacilityDetails">
+              <PropertyRef Name="SportFacilityNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SA46Team01BEntities7" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bookings" EntityType="Self.Booking" />
+          <EntitySet Name="BookingDetails" EntityType="Self.BookingDetail" />
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="Members" EntityType="Self.Member" />
+          <EntitySet Name="MemberCategories" EntityType="Self.MemberCategory" />
+          <EntitySet Name="Sessions" EntityType="Self.Session" />
+          <EntitySet Name="SportFacilities" EntityType="Self.SportFacility" />
+          <EntitySet Name="SportFacilityDetails" EntityType="Self.SportFacilityDetail" />
+          <AssociationSet Name="FK__Booking__MemberI__4AB81AF0" Association="Self.FK__Booking__MemberI__4AB81AF0">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingDe__Booki__4D94879B" Association="Self.FK__BookingDe__Booki__4D94879B">
+            <End Role="Booking" EntitySet="Bookings" />
+            <End Role="BookingDetail" EntitySet="BookingDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingDe__Sessi__4F7CD00D" Association="Self.FK__BookingDe__Sessi__4F7CD00D">
+            <End Role="Session" EntitySet="Sessions" />
+            <End Role="BookingDetail" EntitySet="BookingDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingDe__Sport__4E88ABD4" Association="Self.FK__BookingDe__Sport__4E88ABD4">
+            <End Role="SportFacilityDetails" EntitySet="SportFacilityDetails" />
+            <End Role="BookingDetail" EntitySet="BookingDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Member__CountryC__3F466844" Association="Self.FK__Member__CountryC__3F466844">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Member__Category__403A8C7D" Association="Self.FK__Member__Category__403A8C7D">
+            <End Role="MemberCategory" EntitySet="MemberCategories" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SportFaci__Sport__44FF419A" Association="Self.FK__SportFaci__Sport__44FF419A">
+            <End Role="SportFacility" EntitySet="SportFacilities" />
+            <End Role="SportFacilityDetails" EntitySet="SportFacilityDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SA46Team01BModelStoreContainer" CdmEntityContainer="SA46Team01BEntities7">
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="SA46Team01BModel.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="BookingNo" ColumnName="BookingNo" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="BookingAmount" ColumnName="BookingAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookingDetails">
+            <EntityTypeMapping TypeName="SA46Team01BModel.BookingDetail">
+              <MappingFragment StoreEntitySet="BookingDetail">
+                <ScalarProperty Name="BookingNo" ColumnName="BookingNo" />
+                <ScalarProperty Name="SportFacilityID" ColumnName="SportFacilityID" />
+                <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
+                <ScalarProperty Name="SessionNo" ColumnName="SessionNo" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="SA46Team01BModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="SA46Team01BModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="AmountSpend" ColumnName="AmountSpend" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="ContactTitle" ColumnName="ContactTitle" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberCategories">
+            <EntityTypeMapping TypeName="SA46Team01BModel.MemberCategory">
+              <MappingFragment StoreEntitySet="MemberCategory">
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="TargetAmount" ColumnName="TargetAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="SA46Team01BModel.Session">
+              <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="SessionNo" ColumnName="SessionNo" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SportFacilities">
+            <EntityTypeMapping TypeName="SA46Team01BModel.SportFacility">
+              <MappingFragment StoreEntitySet="SportFacility">
+                <ScalarProperty Name="SportFacilityNo" ColumnName="SportFacilityNo" />
+                <ScalarProperty Name="SportFacilityName" ColumnName="SportFacilityName" />
+                <ScalarProperty Name="PricePerHour" ColumnName="PricePerHour" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SportFacilityDetails">
+            <EntityTypeMapping TypeName="SA46Team01BModel.SportFacilityDetail">
+              <MappingFragment StoreEntitySet="SportFacilityDetails">
+                <ScalarProperty Name="SportFacilityID" ColumnName="SportFacilityID" />
+                <ScalarProperty Name="SportFacilityNo" ColumnName="SportFacilityNo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Quota" ColumnName="Quota" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
